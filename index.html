@@ -1,1 +1,129 @@
-# Real-state-web-
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real Estate Website</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+      margin: 20px;
+      border-radius: 5px;
+      border: 1px solid gray;
+    }
+
+    #property-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .property {
+      background: white;
+      margin: 10px;
+      padding: 10px;
+      width: 220px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .property:hover {
+      transform: scale(1.05);
+    }
+
+    .property img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 8px;
+      margin-top: 10px;
+      border: none;
+      background: green;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: darkgreen;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>🏠 Property Listings</h1>
+
+  <input type="text" id="search" placeholder="Search location...">
+
+  <div id="property-list"></div>
+
+  <script>
+    const properties = [
+      {
+        image: "https://via.placeholder.com/200",
+        price: "₹25 Lakh",
+        location: "Jaipur"
+      },
+      {
+        image: "https://via.placeholder.com/200",
+        price: "₹40 Lakh",
+        location: "Delhi"
+      },
+      {
+        image: "https://via.placeholder.com/200",
+        price: "₹15 Lakh",
+        location: "Kota"
+      },
+      {
+        image: "https://via.placeholder.com/200",
+        price: "₹60 Lakh",
+        location: "Mumbai"
+      }
+    ];
+
+    function showProperties(data) {
+      const list = document.getElementById("property-list");
+      list.innerHTML = "";
+
+      data.forEach(p => {
+        list.innerHTML += `
+          <div class="property">
+            <img src="${p.image}">
+            <h3>${p.price}</h3>
+            <p>${p.location}</p>
+            <button onclick="alert('Contact for this property')">Contact</button>
+          </div>
+        `;
+      });
+    }
+
+    showProperties(properties);
+
+    document.getElementById("search").addEventListener("input", function() {
+      const value = this.value.toLowerCase();
+
+      const filtered = properties.filter(p => 
+        p.location.toLowerCase().includes(value)
+      );
+
+      showProperties(filtered);
+    });
+  </script>
+
+</body>
+</html>
