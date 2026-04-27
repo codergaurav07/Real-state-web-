@@ -1,200 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dream Homes</title>
+  <title>Real Estate</title>
 
   <style>
+    /* Page ka basic design */
     body {
-      margin: 0;
       font-family: Arial;
-      background: #f0f2f5;
-    }
-
-    header {
-      background: #2c3e50;
-      color: white;
-      padding: 15px;
       text-align: center;
-      font-size: 22px;
+      background: #f5f5f5;
     }
 
-    input {
-      padding: 10px;
-      width: 250px;
-      margin: 20px;
-      border-radius: 5px;
-      border: 1px solid gray;
-    }
-
-    #property-list {
+    /* Property cards ka layout */
+    #list {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .property {
+    .card {
       background: white;
-      margin: 15px;
+      margin: 10px;
       padding: 10px;
-      width: 230px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: 0.3s;
+      width: 200px;
+      border-radius: 10px;
     }
 
-    .property:hover {
-      transform: translateY(-8px);
-    }
-
-    .property img {
+    img {
       width: 100%;
       border-radius: 10px;
     }
 
     button {
-      padding: 8px;
-      margin-top: 10px;
-      border: none;
-      background: #27ae60;
+      margin-top: 8px;
+      padding: 5px;
+      background: green;
       color: white;
+      border: none;
       border-radius: 5px;
-      cursor: pointer;
     }
 
-    button:hover {
-      background: #1e8449;
-    }
-
+    /* Details page hidden rahega start me */
     #details {
       display: none;
-      text-align: center;
-      padding: 20px;
-    }
-
-    #details img {
-      width: 320px;
-      border-radius: 10px;
-    }
-
-    .back-btn {
-      background: red;
     }
   </style>
+
 </head>
 
 <body>
 
-<header>🏠 Dream Homes Property Listing</header>
+  <h1>🏠 Property Listing</h1>
 
-<center>
-<input type="text" id="search" placeholder="Search location...">
-</center>
+  <!-- Search box -->
+  <input type="text" id="search" placeholder="Search city...">
 
-<div id="property-list"></div>
+  <!-- Properties yaha show hongi -->
+  <div id="list"></div>
 
-<!-- Details Page -->
-<div id="details">
-  <h2 id="d-price"></h2>
-  <img id="d-image">
-  <h3 id="d-location"></h3>
-  <p id="d-desc"></p>
-  <button onclick="contact()">Contact Owner</button><br><br>
-  <button class="back-btn" onclick="goBack()">⬅ Back</button>
-</div>
+  <!-- Details page -->
+  <div id="details">
+    <h2 id="price"></h2>
+    <img id="image">
+    <p id="city"></p>
+    <p id="desc"></p>
+    <button onclick="back()">Back</button>
+  </div>
 
-<script>
+  <script>
 
-const properties = [
-  {
-    image: "https://via.placeholder.com/300",
-    price: "₹25 Lakh",
-    location: "Jaipur",
-    desc: "2BHK house with garden and parking."
-  },
-  {
-    image: "https://via.placeholder.com/300",
-    price: "₹40 Lakh",
-    location: "Delhi",
-    desc: "3BHK flat near metro."
-  },
-  {
-    image: "https://via.placeholder.com/300",
-    price: "₹15 Lakh",
-    location: "Kota",
-    desc: "Affordable 1BHK for students."
-  },
-  {
-    image: "https://via.placeholder.com/300",
-    price: "₹60 Lakh",
-    location: "Mumbai",
-    desc: "Luxury apartment with sea view."
-  },
-  {
-    image: "https://via.placeholder.com/300",
-    price: "₹35 Lakh",
-    location: "Ahmedabad",
-    desc: "Modern 2BHK in prime area."
-  },
-  {
-    image: "https://via.placeholder.com/300",
-    price: "₹50 Lakh",
-    location: "Bangalore",
-    desc: "Spacious flat in IT hub."
-  }
-];
+    /* Step 1: Data store kiya (properties list) */
+    const data = [
+      {price:"₹20 Lakh", city:"Jaipur", img:"https://via.placeholder.com/200", desc:"2BHK house"},
+      {price:"₹35 Lakh", city:"Delhi", img:"https://via.placeholder.com/200", desc:"3BHK flat"},
+      {price:"₹15 Lakh", city:"Kota", img:"https://via.placeholder.com/200", desc:"1BHK room"}
+    ];
 
-function showProperties(data) {
-  const list = document.getElementById("property-list");
-  list.innerHTML = "";
+    /* Step 2: List show karne ka function */
+    function show(list) {
+      document.getElementById("list").innerHTML = "";
 
-  data.forEach((p, index) => {
-    list.innerHTML += `
-      <div class="property">
-        <img src="${p.image}">
-        <h3>${p.price}</h3>
-        <p>${p.location}</p>
-        <button onclick="showDetails(${index})">View Details</button>
-      </div>
-    `;
-  });
-}
+      list.forEach((item, i) => {
+        document.getElementById("list").innerHTML += `
+          <div class="card">
+            <img src="${item.img}">
+            <h3>${item.price}</h3>
+            <p>${item.city}</p>
+            <button onclick="details(${i})">View</button>
+          </div>
+        `;
+      });
+    }
 
-function showDetails(index) {
-  const p = properties[index];
+    /* Step 3: Details show */
+    function details(i) {
+      let p = data[i];
 
-  document.getElementById("property-list").style.display = "none";
-  document.getElementById("search").style.display = "none";
-  document.getElementById("details").style.display = "block";
+      document.getElementById("list").style.display = "none";
+      document.getElementById("search").style.display = "none";
+      document.getElementById("details").style.display = "block";
 
-  document.getElementById("d-price").innerText = p.price;
-  document.getElementById("d-image").src = p.image;
-  document.getElementById("d-location").innerText = p.location;
-  document.getElementById("d-desc").innerText = p.desc;
-}
+      document.getElementById("price").innerText = p.price;
+      document.getElementById("image").src = p.img;
+      document.getElementById("city").innerText = p.city;
+      document.getElementById("desc").innerText = p.desc;
+    }
 
-function goBack() {
-  document.getElementById("details").style.display = "none";
-  document.getElementById("property-list").style.display = "flex";
-  document.getElementById("search").style.display = "inline-block";
-}
+    /* Step 4: Back button */
+    function back() {
+      document.getElementById("details").style.display = "none";
+      document.getElementById("list").style.display = "flex";
+      document.getElementById("search").style.display = "inline";
+    }
 
-function contact() {
-  alert("Owner will contact you soon 📞");
-}
+    /* Step 5: Search feature */
+    document.getElementById("search").addEventListener("input", function() {
+      let value = this.value.toLowerCase();
 
-showProperties(properties);
+      let filtered = data.filter(item =>
+        item.city.toLowerCase().includes(value)
+      );
 
-document.getElementById("search").addEventListener("input", function() {
-  const value = this.value.toLowerCase();
+      show(filtered);
+    });
 
-  const filtered = properties.filter(p =>
-    p.location.toLowerCase().includes(value)
-  );
+    /* Start me data show */
+    show(data);
 
-  showProperties(filtered);
-});
-
-</script>
+  </script>
 
 </body>
 </html>
